@@ -50,7 +50,7 @@ class MemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Member
-        fields = ['user', 'phone', 'address']
+        fields = ['id', 'user', 'phone', 'address']
 
     def create(self, validated_data):
         user_data = validated_data.pop('user') 
@@ -64,8 +64,10 @@ class MemberSerializer(serializers.ModelSerializer):
 
 # Serializer for BorrowingRecord
 class BorrowingHistorySerializer(serializers.ModelSerializer):
-    book = BookSerializer()
-    member = MemberSerializer()
+    book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all()) 
+    member = serializers.PrimaryKeyRelatedField(queryset=Member.objects.all())  
+
+
 
     class Meta:
         model = BorrowingHistory
